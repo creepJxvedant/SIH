@@ -30,18 +30,18 @@ export function UploadLecture() {
   const {
     run: runTagging,
     data: taggingResult,
-    state: taggingState,
+    loading: taggingState,
     error: taggingError,
   } = useFlow(autoTagRecordedLecture);
   const {
     run: runSummary,
     data: summaryResult,
-    state: summaryState,
+    loading: summaryState,
     error: summaryError,
   } = useFlow(generateSummaryAndHighlights);
 
   const isProcessing =
-    taggingState === 'running' || summaryState === 'running';
+    taggingState || summaryState;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

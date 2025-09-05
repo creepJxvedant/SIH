@@ -24,18 +24,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@genkit-ai/googleai', 'genkit'],
-  },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        'async_hooks': false,
-      };
-    }
-    return config;
-  },
+  serverExternalPackages: ['@genkit-ai/googleai', 'genkit'],
 };
 
 export default nextConfig;
