@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Sparkles, UploadCloud } from 'lucide-react';
-import { useFlow } from '@genkit-ai/next/client';
+import { useFlow } from '@genkit-ai/next';
 import { autoTagRecordedLecture } from '@/ai/flows/auto-tag-recorded-lectures';
 import { generateSummaryAndHighlights } from '@/ai/flows/lecture-summary-and-highlights';
 import { useToast } from '@/hooks/use-toast';
