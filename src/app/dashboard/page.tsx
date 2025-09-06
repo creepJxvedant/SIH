@@ -7,16 +7,8 @@ import { Header } from '@/components/app/header';
 import { GenClassId } from '@/components/app/gen-class-id';
 import { UploadLecture } from '@/components/app/upload-lecture';
 import { JoinClass } from '@/components/app/join-class';
-import { StudyMaterials } from '@/components/app/study-materials';
 import type { Role } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
-import { StudentAnalytics } from '@/components/app/student-analytics';
-import { StudentProfile } from '@/components/app/student-profile';
-import { StudentManagement } from '@/components/app/student-management';
-import { TeacherProfile } from '@/components/app/teacher-profile';
-import { SecuritySettings } from '@/components/app/security-settings';
-import { CreateQuiz } from '@/components/app/create-quiz';
-import { ViewSubmissions } from '@/components/app/view-submissions';
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
@@ -63,51 +55,15 @@ export default function DashboardPage() {
                 <UploadLecture />
               </div>
             </div>
-
-            <div id="create-quiz">
-               <h2 className="text-3xl font-bold mb-6 font-headline">
-                Create Quiz
-              </h2>
-               <CreateQuiz />
-            </div>
-
-            <div id="submissions">
-               <h2 className="text-3xl font-bold mb-6 font-headline">
-                Submissions
-              </h2>
-               <ViewSubmissions />
-            </div>
-
-            <div id="students">
-               <h2 className="text-3xl font-bold mb-6 font-headline">
-                Students
-              </h2>
-               <StudentManagement />
-            </div>
-
-            <div id="settings">
-               <h2 className="text-3xl font-bold mb-6 font-headline">
-                Settings
-              </h2>
-               <div className="grid gap-8 md:grid-cols-2">
-                <TeacherProfile />
-                <SecuritySettings />
-               </div>
-            </div>
           </>
         ) : (
           <>
-            <div id="live-class">
+             {/* Student dashboard default content can go here, or redirect */}
+             <div id="live-class">
               <h2 className="text-3xl font-bold mb-6 font-headline">
                 Live Class
               </h2>
               <JoinClass />
-            </div>
-            <div id="analytics">
-              <StudentAnalytics />
-            </div>
-            <div id="profile">
-              <StudentProfile />
             </div>
           </>
         )}
