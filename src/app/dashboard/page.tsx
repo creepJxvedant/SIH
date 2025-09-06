@@ -12,6 +12,7 @@ import type { Role } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StudentAnalytics } from '@/components/app/student-analytics';
 import { StudentProfile } from '@/components/app/student-profile';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
@@ -49,11 +50,46 @@ export default function DashboardPage() {
       <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-12">
         {role === 'teacher' ? (
           <>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <GenClassId />
-              <UploadLecture />
+            <div id="dashboard">
+               <h2 className="text-3xl font-bold mb-6 font-headline">
+                Dashboard
+              </h2>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <GenClassId />
+                <UploadLecture />
+              </div>
+              <div className="mt-12">
+                <StudyMaterials />
+              </div>
             </div>
-            <StudyMaterials />
+
+            <div id="students">
+               <h2 className="text-3xl font-bold mb-6 font-headline">
+                Students
+              </h2>
+               <Card>
+                <CardHeader>
+                  <CardTitle>Student Management</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">Student list and management features will be displayed here.</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div id="settings">
+               <h2 className="text-3xl font-bold mb-6 font-headline">
+                Settings
+              </h2>
+               <Card>
+                <CardHeader>
+                  <CardTitle>Account Settings</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">Teacher account settings and preferences will be available here.</p>
+                </CardContent>
+              </Card>
+            </div>
           </>
         ) : (
           <>

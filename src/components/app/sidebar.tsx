@@ -38,7 +38,7 @@ const teacherNav = [
   { href: '#dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '#students', label: 'Students', icon: Users },
   { href: '#settings', label: 'Settings', icon: Settings },
-]
+];
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -56,6 +56,17 @@ export function AppSidebar() {
   };
 
   const navItems = role === 'student' ? studentNav : teacherNav;
+
+  const handleNav = (href: string) => {
+    if (pathname === '/dashboard') {
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      router.push(`/dashboard${href}`);
+    }
+  };
 
   return (
     <Sidebar>
@@ -76,11 +87,10 @@ export function AppSidebar() {
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.href}
-                onClick={() => router.push(item.href)}
+                onClick={() => handleNav(item.href)}
                 tooltip={item.label}
               >
-                <a href={item.href}>
+                <a>
                   <item.icon />
                   <span>{item.label}</span>
                 </a>
