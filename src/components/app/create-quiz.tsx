@@ -133,7 +133,12 @@ export function CreateQuiz() {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <RadioGroup onValueChange={(value) => handleCorrectAnswerChange(index, value)} value={q.correctAnswerIndex?.toString()}>
                         {q.options.map((opt, optIndex) => (
-                           <div key={optIndex} className="flex items-center gap-2">
+                           <div 
+                                key={optIndex} 
+                                className={cn(
+                                    "flex items-center gap-2 transition-opacity",
+                                    q.correctAnswerIndex !== null && q.correctAnswerIndex !== optIndex && "opacity-80"
+                                )}>
                                <RadioGroupItem value={optIndex.toString()} id={`q${index}-opt${optIndex}`} />
                                <Input 
                                 placeholder={`Option ${optIndex + 1}`}
