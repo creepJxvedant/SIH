@@ -25,7 +25,7 @@ import {
   SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Role } from '@/lib/types';
 
@@ -46,6 +46,7 @@ const teacherNav = [
 
 export function AppSidebar() {
   const router = useRouter();
+  const pathname = usePathname();
   const [role, setRole] = useState<Role | null>(null);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ export function AppSidebar() {
         <Button
           variant="ghost"
           className="flex items-center justify-start gap-2 w-full px-2"
+          onClick={() => handleNav('/dashboard')}
         >
           <GraduationCap className="size-8 text-primary" />
           <span className="font-bold text-lg text-foreground group-data-[collapsible=icon]:hidden">
@@ -82,14 +84,14 @@ export function AppSidebar() {
           {navItems.map((item) => (
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
-                asChild
                 onClick={() => handleNav(item.href)}
                 tooltip={item.label}
+                isActive={pathname === item.href}
               >
-                <a className="cursor-pointer">
+                
                   <item.icon />
                   <span>{item.label}</span>
-                </a>
+                
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

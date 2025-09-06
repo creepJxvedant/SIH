@@ -3,12 +3,14 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
-import { FileText, Presentation, Video, Search, Download } from 'lucide-react';
+import { FileText, Presentation, Video, Search, Download, Play } from 'lucide-react';
 import Image from 'next/image';
 import { Input } from '../ui/input';
+import { useRouter } from 'next/navigation';
 
 const allMaterials = [
   {
+    id: '1',
     title: 'Quantum Physics',
     description: 'PDF notes for the introductory chapter.',
     type: 'PDF',
@@ -19,6 +21,7 @@ const allMaterials = [
     className: 'Physics 101',
   },
   {
+    id: '2',
     title: 'History of Art',
     description: 'Presentation slides for the Renaissance period.',
     type: 'Slides',
@@ -29,6 +32,7 @@ const allMaterials = [
     className: 'Art History 203',
   },
   {
+    id: '3',
     title: 'Calculus Explained',
     description: 'Recorded video lecture on differentiation.',
     type: 'Video',
@@ -37,8 +41,10 @@ const allMaterials = [
     hint: 'math blackboard',
     uploadedBy: 'Dr. Evelyn Reed',
     className: 'Math 201',
+    videoUrl: '/videos/placeholder.mp4'
   },
   {
+    id: '4',
     title: 'Intro to Python',
     description: 'Beginner-friendly PDF guide to Python.',
     type: 'PDF',
@@ -49,6 +55,7 @@ const allMaterials = [
     className: 'CS 101',
   },
   {
+    id: '5',
     title: 'The Solar System',
     description: 'Slideshow of planets and celestial bodies.',
     type: 'Slides',
@@ -59,6 +66,7 @@ const allMaterials = [
     className: 'Astronomy 101',
   },
   {
+    id: '6',
     title: 'Creative Writing',
     description: 'Video on storytelling techniques.',
     type: 'Video',
@@ -67,15 +75,26 @@ const allMaterials = [
     hint: 'writing notebook',
     uploadedBy: 'Prof. Davis',
     className: 'English 102',
+    videoUrl: '/videos/placeholder.mp4'
   },
 ];
 
 export function StudyMaterials() {
   const [searchTerm, setSearchTerm] = useState('');
+  const router = useRouter();
 
   const filteredMaterials = allMaterials.filter((material) =>
     material.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  const handleCardClick = (material: typeof allMaterials[0]) => {
+      if (material.type === 'Video') {
+          router.push(`/dashboard/study-materials/${material.id}`);
+      } else {
+          // Handle download for other file types
+          console.log(`Downloading ${material.title}`);
+      }
+  }
 
   return (
     <section>
@@ -95,6 +114,7 @@ export function StudyMaterials() {
         {filteredMaterials.map((material) => (
           <Card
             key={material.title}
+            onClick={() => handleCardClick(material)}
             className="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105"
           >
             <Image
@@ -130,9 +150,24 @@ export function StudyMaterials() {
                 <p className="text-xs text-primary font-semibold mb-4">
                     Uploaded by: {material.uploadedBy}
                 </p>
-                <button className="w-full flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                    <Download className="w-4 h-4" />
-                    Download
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent card click handler
+                    handleCardClick(material)
+                  }}
+                  className="w-full flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                >
+                  {material.type === 'Video' ? (
+                      <>
+                        <Play className="w-4 h-4" />
+                        Play Video
+                      </>
+                  ) : (
+                      <>
+                        <Download className="w-4 h-4" />
+                        Download
+                      </>
+                  )}
                 </button>
             </div>
 
