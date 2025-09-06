@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Timer, PlayCircle } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const liveTests = [
   {
@@ -31,14 +31,10 @@ const liveTests = [
 ];
 
 export function AvailableTests() {
-  const { toast } = useToast();
+  const router = useRouter();
 
-  const handleStartTest = (title: string) => {
-    toast({
-      title: 'Starting Test',
-      description: `You are about to begin the ${title} test. Good luck!`,
-    });
-    // In a real app, this would navigate to the test-taking interface.
+  const handleStartTest = (testId: string) => {
+    router.push(`/dashboard/tests/${testId}`);
   };
 
   return (
@@ -64,7 +60,7 @@ export function AvailableTests() {
             <CardFooter>
               <Button
                 className="w-full"
-                onClick={() => handleStartTest(test.title)}
+                onClick={() => handleStartTest(test.id)}
               >
                 <PlayCircle className="mr-2" />
                 Start Test
