@@ -21,6 +21,7 @@ function DashboardLoading() {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <Skeleton className="h-48 rounded-lg" />
           <Skeleton className="h-48 rounded-lg" />
+           <Skeleton className="h-48 rounded-lg md:col-span-2 lg:col-span-1" />
         </div>
       </main>
     </div>
@@ -29,7 +30,6 @@ function DashboardLoading() {
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -38,11 +38,10 @@ export default function DashboardPage() {
       router.push('/');
     } else {
       setRole(storedRole);
-      setLoading(false);
     }
   }, [router]);
 
-  if (loading) {
+  if (!role) {
     return <DashboardLoading />;
   }
 
@@ -51,27 +50,22 @@ export default function DashboardPage() {
       <Header role={role} />
       <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-12">
         {role === 'teacher' ? (
-          <>
-            <div id="dashboard">
-               <h2 className="text-3xl font-bold mb-6 font-headline">
-                Dashboard
-              </h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <GenClassId />
-                <UploadLecture />
-              </div>
+          <div id="dashboard">
+            <h2 className="text-3xl font-bold mb-6 font-headline">
+              Dashboard
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <GenClassId />
+              <UploadLecture />
             </div>
-          </>
+          </div>
         ) : (
-          <>
-             {/* Student dashboard default content can go here, or redirect */}
-             <div id="live-class">
-              <h2 className="text-3xl font-bold mb-6 font-headline">
-                Live Class
-              </h2>
-              <JoinClass />
-            </div>
-          </>
+          <div id="live-class">
+            <h2 className="text-3xl font-bold mb-6 font-headline">
+              Live Class
+            </h2>
+            <JoinClass />
+          </div>
         )}
       </main>
     </div>
