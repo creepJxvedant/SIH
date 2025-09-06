@@ -24,6 +24,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Label } from '../ui/label';
 
 const students = [
   {
@@ -76,6 +84,34 @@ export function StudentManagement() {
         <CardDescription>
           Track attendance and academic performance of your students.
         </CardDescription>
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className='w-full space-y-2'>
+              <Label htmlFor="class-select">Class</Label>
+              <Select defaultValue="math-101">
+                <SelectTrigger id="class-select">
+                  <SelectValue placeholder="Select a class" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="math-101">Mathematics 101</SelectItem>
+                  <SelectItem value="phy-202">Physics 202</SelectItem>
+                  <SelectItem value="cs-301">Computer Science 301</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+             <div className='w-full space-y-2'>
+              <Label htmlFor="section-select">Section</Label>
+              <Select defaultValue="section-a">
+                <SelectTrigger id="section-select">
+                  <SelectValue placeholder="Select a section" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="section-a">Section A</SelectItem>
+                  <SelectItem value="section-b">Section B</SelectItem>
+                  <SelectItem value="section-c">Section C</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+        </div>
       </CardHeader>
       <CardContent>
         <Accordion type="single" collapsible className="w-full">
