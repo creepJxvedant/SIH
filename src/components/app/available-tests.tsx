@@ -10,8 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Timer, PlayCircle } from 'lucide-react';
+import { FileText, Timer, PlayCircle, CheckCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const liveTests = [
   {
@@ -32,10 +33,22 @@ const liveTests = [
 
 export function AvailableTests() {
   const router = useRouter();
+  const [completedTests, setCompletedTests] = useState<string[]>([]);
+
+  useEffect(() => {
+    const storedSubmissions = localStorage.getItem('submittedTests');
+    if (storedSubmissions) {
+      setCompletedTests(JSON.parse(storedSubmissions));
+    }
+  }, []);
 
   const handleStartTest = (testId: string) => {
     router.push(`/dashboard/tests/${testId}`);
   };
+
+  const isTestCompleted = (testId: string) => {
+    return completedTests.includes(testId);
+  }
 
   return (
     <section>
@@ -61,9 +74,19 @@ export function AvailableTests() {
               <Button
                 className="w-full"
                 onClick={() => handleStartTest(test.id)}
+                disabled={isTestCompleted(test.id)}
               >
-                <PlayCircle className="mr-2" />
-                Start Test
+                {isTestCompleted(test.id) ? (
+                    <>
+                        <CheckCircle className="mr-2"/>
+                        Completed
+                    </>
+                ) : (
+                    <>
+                        <PlayCircle className="mr-2" />
+                        Start Test
+                    </>
+                )}
               </Button>
             </CardFooter>
           </Card>

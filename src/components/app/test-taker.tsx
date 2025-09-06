@@ -10,6 +10,7 @@ import { Label } from '../ui/label';
 import { AlertTriangle, Check, ShieldAlert } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { useRouter } from 'next/navigation';
 
 
 interface Question {
@@ -31,6 +32,7 @@ interface TestTakerProps {
 
 export function TestTaker({ testData }: TestTakerProps) {
     const { toast } = useToast();
+    const router = useRouter();
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -39,13 +41,18 @@ export function TestTaker({ testData }: TestTakerProps) {
     const [isTestStarted, setIsTestStarted] = useState(false);
 
     const enterFullScreen = useCallback(() => {
-        const element = testContainerRef.current;
-        if (element) {
-            if (element.requestFullscreen) {
-                element.requestFullscreen().catch(err => console.error(err));
-            }
+        const element = document.documentElement; // Use documentElement for broader compatibility
+        if (element.requestFullscreen) {
+            element.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                 toast({
+                    variant: 'destructive',
+                    title: 'Full-Screen Failed',
+                    description: 'Could not enter full-screen mode. Please enable it in your browser settings.',
+                });
+            });
         }
-    }, []);
+    }, [toast]);
 
     const exitFullScreen = () => {
         if (document.fullscreenElement) {
@@ -76,13 +83,25 @@ export function TestTaker({ testData }: TestTakerProps) {
 
     const handleSubmit = () => {
         exitFullScreen();
+        
+        // Save submission to localStorage
+        const submittedTests = JSON.parse(localStorage.getItem('submittedTests') || '[]');
+        if (!submittedTests.includes(testData.id)) {
+            submittedTests.push(testData.id);
+            localStorage.setItem('submittedTests', JSON.stringify(submittedTests));
+        }
+        
         toast({
             title: 'Test Submitted!',
             description: `Your answers for "${testData.title}" have been submitted.`,
         });
+
+        router.push('/dashboard/tests');
     };
 
     useEffect(() => {
+         if (!isTestStarted) return;
+
         const handleVisibilityChange = () => {
             if (document.visibilityState === 'hidden' && isFullScreen) {
                 setLeaveCount(prev => {
@@ -106,14 +125,15 @@ export function TestTaker({ testData }: TestTakerProps) {
         };
 
         const handleFullScreenChange = () => {
-            setIsFullScreen(!!document.fullscreenElement);
-            if (!document.fullscreenElement && isTestStarted) {
-                // If user exits fullscreen manually, re-enter it.
-                enterFullScreen();
+            const isCurrentlyFullScreen = !!document.fullscreenElement;
+            setIsFullScreen(isCurrentlyFullScreen);
+            if (!isCurrentlyFullScreen && isTestStarted) {
+                // If user exits fullscreen manually, show a persistent warning.
                  toast({
                     variant: 'destructive',
                     title: 'Full-Screen Required',
-                    description: 'Please remain in full-screen mode until the test is submitted.',
+                    description: 'Please re-enter full-screen mode to continue the test.',
+                    duration: Infinity, // Keep toast until dismissed
                 });
             }
         };
@@ -124,45 +144,47 @@ export function TestTaker({ testData }: TestTakerProps) {
         return () => {
             document.removeEventListener('visibilitychange', handleVisibilityChange);
             document.removeEventListener('fullscreenchange', handleFullScreenChange);
-            exitFullScreen();
+            exitFullScreen(); // Ensure we exit fullscreen when the component unmounts
         };
-    }, [toast, isFullScreen, isTestStarted, enterFullScreen]);
+    }, [isTestStarted, toast, isFullScreen]);
     
     if (!isTestStarted) {
         return (
-            <Card className="max-w-2xl mx-auto">
-                <CardHeader>
-                    <CardTitle>{testData.title}</CardTitle>
-                    <CardDescription>
-                       This test must be completed in full-screen mode.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Alert>
-                        <ShieldAlert className="h-4 w-4" />
-                        <AlertTitle>Attention!</AlertTitle>
-                        <AlertDescription>
-                            <ul className="list-disc pl-5 space-y-1">
-                                <li>The test will start in full-screen mode.</li>
-                                <li>Do not exit full-screen until you submit.</li>
-                                <li>Switching tabs more than 3 times will flag your test for cheating.</li>
-                            </ul>
-                        </AlertDescription>
-                    </Alert>
-                </CardContent>
-                <CardFooter>
-                    <Button className="w-full" onClick={handleStartTest}>
-                        Start Test
-                    </Button>
-                </CardFooter>
-            </Card>
+             <div className="flex items-center justify-center h-full">
+                <Card className="max-w-2xl mx-auto">
+                    <CardHeader>
+                        <CardTitle>{testData.title}</CardTitle>
+                        <CardDescription>
+                        This test must be completed in full-screen mode.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Alert>
+                            <ShieldAlert className="h-4 w-4" />
+                            <AlertTitle>Attention!</AlertTitle>
+                            <AlertDescription>
+                                <ul className="list-disc pl-5 space-y-1">
+                                    <li>The test will start in full-screen mode.</li>
+                                    <li>Do not exit full-screen until you submit.</li>
+                                    <li>Switching tabs more than 3 times will flag your test for cheating.</li>
+                                </ul>
+                            </AlertDescription>
+                        </Alert>
+                    </CardContent>
+                    <CardFooter>
+                        <Button className="w-full" onClick={handleStartTest}>
+                            Start Test
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
         )
     }
 
     const currentQuestion = testData.questions[currentQuestionIndex];
 
     return (
-        <div ref={testContainerRef} className="bg-background h-full w-full flex items-center justify-center">
+        <div ref={testContainerRef} className="bg-background h-full w-full flex items-center justify-center p-4">
              <Card className="w-full max-w-3xl">
                 <CardHeader>
                     <CardTitle className="flex justify-between items-center">
