@@ -29,6 +29,7 @@ import { Button } from '../ui/button';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Role } from '@/lib/types';
+import { ThemeToggle } from './theme-toggle';
 
 const studentNav = [
   { href: '/dashboard/live-class', label: 'Live Class', icon: Clapperboard },
@@ -101,6 +102,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter className='p-2'>
+        <ThemeToggle />
         <SidebarSeparator />
         <SidebarMenu>
            <SidebarMenuItem>

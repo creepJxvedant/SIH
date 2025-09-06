@@ -8,6 +8,7 @@ import { AppSidebar } from '@/components/app/sidebar';
 import './globals.css';
 import { usePathname } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
+import { ThemeProvider } from '@/components/app/theme-provider';
 
 // Metadata can only be exported from Server Components
 // export const metadata: Metadata = {
@@ -37,8 +38,15 @@ function RootLayoutComponent({
         />
       </head>
       <body className="font-body antialiased">
-        <LayoutProvider>{children}</LayoutProvider>
-        <Toaster />
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+        >
+          <LayoutProvider>{children}</LayoutProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
