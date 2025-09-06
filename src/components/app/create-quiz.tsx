@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Calendar as CalendarIcon, Send, PlusCircle, XCircle } from 'lucide-react';
+import { Calendar as CalendarIcon, Send, PlusCircle, XCircle, Clock, Timer } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
@@ -34,6 +34,7 @@ export function CreateQuiz() {
     { id: 1, questionText: '', options: ['', '', '', ''], correctAnswerIndex: null },
   ]);
   const [postDate, setPostDate] = useState<Date | undefined>(new Date());
+  const [duration, setDuration] = useState<number>(30);
   const { toast } = useToast();
 
   const handleQuestionChange = (index: number, field: 'questionText' | 'options', value: string, optionIndex?: number) => {
@@ -63,13 +64,22 @@ export function CreateQuiz() {
     const newQuestions = questions.filter((_, i) => i !== index);
     setQuestions(newQuestions);
   }
+  
+  const handleTimeChange = (timeValue: string) => {
+      if (!postDate) return;
+      const [hours, minutes] = timeValue.split(':').map(Number);
+      const newDate = new Date(postDate);
+      newDate.setHours(hours);
+      newDate.setMinutes(minutes);
+      setPostDate(newDate);
+  }
 
   const handleCreateQuiz = () => {
-    if (!title || !postDate) {
+    if (!title || !postDate || !duration) {
       toast({
         variant: 'destructive',
         title: 'Missing Fields',
-        description: 'Please provide a title and a post date.',
+        description: 'Please provide a title, post date/time, and duration.',
       });
       return;
     }
@@ -85,11 +95,12 @@ export function CreateQuiz() {
     }
     toast({
       title: 'Quiz Created!',
-      description: `"${title}" has been scheduled to post on ${format(postDate, 'PPP')}.`,
+      description: `"${title}" has been scheduled to post on ${format(postDate, 'PPP p')}.`,
     });
     setTitle('');
     setQuestions([{ id: 1, questionText: '', options: ['', '', '', ''], correctAnswerIndex: null }]);
     setPostDate(new Date());
+    setDuration(30);
   };
 
   return (
@@ -146,30 +157,54 @@ export function CreateQuiz() {
             Add Another Question
         </Button>
 
-        <div className="space-y-2">
-          <Label htmlFor="post-date">Schedule Post Date</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={'outline'}
-                className={cn(
-                  'w-full justify-start text-left font-normal',
-                  !postDate && 'text-muted-foreground'
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {postDate ? format(postDate, 'PPP') : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={postDate}
-                onSelect={setPostDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="post-date">Schedule Date & Time</Label>
+              <div className='flex gap-2'>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={'outline'}
+                        className={cn(
+                          'w-full justify-start text-left font-normal',
+                          !postDate && 'text-muted-foreground'
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {postDate ? format(postDate, 'PPP') : <span>Pick a date</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={postDate}
+                        onSelect={setPostDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Input 
+                    type="time" 
+                    className="w-[120px]" 
+                    value={postDate ? format(postDate, 'HH:mm') : ''}
+                    onChange={(e) => handleTimeChange(e.target.value)}
+                    />
+              </div>
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor="duration">Test Duration (minutes)</Label>
+                 <div className="flex items-center gap-2">
+                     <Timer className="w-5 h-5 text-muted-foreground" />
+                    <Input
+                        id="duration"
+                        type="number"
+                        placeholder="e.g., 30"
+                        value={duration}
+                        onChange={(e) => setDuration(parseInt(e.target.value))}
+                        min="1"
+                    />
+                </div>
+            </div>
         </div>
       </CardContent>
       <CardFooter>
