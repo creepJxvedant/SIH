@@ -35,6 +35,7 @@ export function TestTaker({ testData }: TestTakerProps) {
     const [answers, setAnswers] = useState<Record<number, string>>({});
     const [leaveCount, setLeaveCount] = useState(0);
     const [isTestStarted, setIsTestStarted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const enterFullScreen = useCallback(() => {
         const element = document.documentElement;
@@ -78,6 +79,7 @@ export function TestTaker({ testData }: TestTakerProps) {
     }
 
     const handleSubmit = () => {
+        setIsSubmitting(true);
         exitFullScreen();
         
         const submittedTests = JSON.parse(localStorage.getItem('submittedTests') || '[]');
@@ -92,14 +94,14 @@ export function TestTaker({ testData }: TestTakerProps) {
         });
 
         // Close the test window
-        window.close();
+        setTimeout(() => window.close(), 100);
     };
 
     useEffect(() => {
         if (!isTestStarted) return;
 
         const handleVisibilityChange = () => {
-            if (document.visibilityState === 'hidden' && isFullScreen) {
+            if (document.visibilityState === 'hidden' && document.fullscreenElement) {
                 setLeaveCount(prev => {
                     const newCount = prev + 1;
                     if (newCount > 3) {
@@ -123,7 +125,7 @@ export function TestTaker({ testData }: TestTakerProps) {
         const handleFullScreenChange = () => {
             const isCurrentlyFullScreen = !!document.fullscreenElement;
             setIsFullScreen(isCurrentlyFullScreen);
-            if (!isCurrentlyFullScreen && isTestStarted) {
+            if (!isCurrentlyFullScreen && isTestStarted && !isSubmitting) {
                  toast({
                     variant: 'destructive',
                     title: 'Full-Screen Required',
@@ -142,7 +144,7 @@ export function TestTaker({ testData }: TestTakerProps) {
             document.removeEventListener('fullscreenchange', handleFullScreenChange);
             exitFullScreen();
         };
-    }, [isTestStarted, toast, isFullScreen, exitFullScreen]);
+    }, [isTestStarted, toast, isSubmitting, exitFullScreen]);
     
     if (!isTestStarted) {
         return (
