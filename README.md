@@ -1,5 +1,5 @@
-# Firebase Studio
 
-This is a NextJS starter in Firebase Studio.
+# educonnect
 
-To get started, take a look at src/app/page.tsx.
+
+--@author https://vedantverma.onrender.com/ 
