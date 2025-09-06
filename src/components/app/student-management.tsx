@@ -87,14 +87,14 @@ export function StudentManagement() {
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <div className='w-full space-y-2'>
               <Label htmlFor="class-select">Class</Label>
-              <Select defaultValue="math-101">
+              <Select defaultValue="class-1">
                 <SelectTrigger id="class-select">
                   <SelectValue placeholder="Select a class" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="math-101">Mathematics 101</SelectItem>
-                  <SelectItem value="phy-202">Physics 202</SelectItem>
-                  <SelectItem value="cs-301">Computer Science 301</SelectItem>
+                  <SelectItem value="class-1">Class 1</SelectItem>
+                  <SelectItem value="class-2">Class 2</SelectItem>
+                  <SelectItem value="class-3">Class 3</SelectItem>
                 </SelectContent>
               </Select>
             </div>
