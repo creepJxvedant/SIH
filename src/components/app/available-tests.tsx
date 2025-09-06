@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Timer, PlayCircle, CheckCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 const liveTests = [
@@ -32,7 +31,6 @@ const liveTests = [
 ];
 
 export function AvailableTests() {
-  const router = useRouter();
   const [completedTests, setCompletedTests] = useState<string[]>([]);
 
   useEffect(() => {
@@ -40,10 +38,26 @@ export function AvailableTests() {
     if (storedSubmissions) {
       setCompletedTests(JSON.parse(storedSubmissions));
     }
+    
+    // Listen for storage changes from other tabs/windows
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'submittedTests' && event.newValue) {
+        setCompletedTests(JSON.parse(event.newValue));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+
   }, []);
 
   const handleStartTest = (testId: string) => {
-    router.push(`/dashboard/tests/${testId}`);
+    // Open the test in a new, focused window.
+    // The test page itself will handle the fullscreen request.
+    const testWindow = window.open(`/test-session/${testId}`, '_blank', 'noopener,noreferrer');
+    testWindow?.focus();
   };
 
   const isTestCompleted = (testId: string) => {

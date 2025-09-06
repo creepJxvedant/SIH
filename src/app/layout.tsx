@@ -56,8 +56,9 @@ function RootLayoutComponent({
 function LayoutProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isDashboard = pathname.startsWith('/dashboard');
+  const isTestSession = pathname.startsWith('/test-session');
 
-  if (!isDashboard) {
+  if (!isDashboard || isTestSession) {
     return <>{children}</>;
   }
 

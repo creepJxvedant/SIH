@@ -3,12 +3,7 @@
 
 import { TestTaker } from '@/components/app/test-taker';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-
-// This page is now a fallback for direct navigation, 
-// but the primary flow opens the test in /test-session/[id]
-// We can keep it simple or redirect. For now, let's just show a message.
 
 const tests = {
     'quiz-1': {
@@ -31,14 +26,21 @@ const tests = {
 };
 
 
-export default function TestPage() {
-    return (
-        <div className="flex flex-col w-full h-screen bg-background items-center justify-center">
-           <div className="text-center text-muted-foreground p-8">
-                <h1 className="text-2xl font-bold mb-4">Test Session</h1>
-                <p>Tests should be started from the "Available Tests" page.</p>
-                <p>This window can be closed.</p>
-           </div>
-        </div>
-    );
+export default function TestSessionPage() {
+    const params = useParams();
+    const testId = params.id as keyof typeof tests;
+    const testData = testId ? tests[testId] : null;
+    
+    if (!testData) {
+         return (
+            <div className="flex items-center justify-center min-h-screen bg-background">
+                <div className="text-center text-muted-foreground">
+                    <p className='text-xl'>Test not found or invalid ID.</p>
+                    <p>This window can be closed.</p>
+                </div>
+            </div>
+        );
+    }
+    
+    return <TestTaker testData={testData} />;
 }
