@@ -1,15 +1,20 @@
+
+'use client';
+
 import type { Metadata } from 'next';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/toaster';
 import { AppSidebar } from '@/components/app/sidebar';
 import './globals.css';
+import { usePathname } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'EduNow',
-  description: 'A new way of learning',
-};
+// Metadata can only be exported from Server Components
+// export const metadata: Metadata = {
+//   title: 'EduNow',
+//   description: 'A new way of learning',
+// };
 
-export default function RootLayout({
+function RootLayoutComponent({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,6 +22,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <title>EduNow</title>
+        <meta name="description" content="A new way of learning" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -29,12 +36,28 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarInset>{children}</SidebarInset>
-        </SidebarProvider>
+        <LayoutProvider>{children}</LayoutProvider>
         <Toaster />
       </body>
     </html>
   );
 }
+
+
+function LayoutProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isDashboard = pathname.startsWith('/dashboard');
+
+  if (!isDashboard) {
+    return <>{children}</>;
+  }
+
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>{children}</SidebarInset>
+    </SidebarProvider>
+  );
+}
+
+export default RootLayoutComponent;
