@@ -14,6 +14,8 @@ import { StudentAnalytics } from '@/components/app/student-analytics';
 import { StudentProfile } from '@/components/app/student-profile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StudentManagement } from '@/components/app/student-management';
+import { TeacherProfile } from '@/components/app/teacher-profile';
+import { SecuritySettings } from '@/components/app/security-settings';
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
@@ -75,14 +77,10 @@ export default function DashboardPage() {
                <h2 className="text-3xl font-bold mb-6 font-headline">
                 Settings
               </h2>
-               <Card>
-                <CardHeader>
-                  <CardTitle>Account Settings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Teacher account settings and preferences will be available here.</p>
-                </CardContent>
-              </Card>
+               <div className="grid gap-8 md:grid-cols-2">
+                <TeacherProfile />
+                <SecuritySettings />
+               </div>
             </div>
           </>
         ) : (
