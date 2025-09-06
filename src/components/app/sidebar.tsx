@@ -86,7 +86,7 @@ export function AppSidebar() {
                 onClick={() => handleNav(item.href)}
                 tooltip={item.label}
               >
-                <a>
+                <a className="cursor-pointer">
                   <item.icon />
                   <span>{item.label}</span>
                 </a>
