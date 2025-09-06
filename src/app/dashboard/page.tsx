@@ -13,6 +13,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { StudentAnalytics } from '@/components/app/student-analytics';
 import { StudentProfile } from '@/components/app/student-profile';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { StudentManagement } from '@/components/app/student-management';
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
@@ -67,14 +68,7 @@ export default function DashboardPage() {
                <h2 className="text-3xl font-bold mb-6 font-headline">
                 Students
               </h2>
-               <Card>
-                <CardHeader>
-                  <CardTitle>Student Management</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Student list and management features will be displayed here.</p>
-                </CardContent>
-              </Card>
+               <StudentManagement />
             </div>
 
             <div id="settings">
