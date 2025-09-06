@@ -101,7 +101,7 @@ export function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className='p-2'>
+      <SidebarFooter className='p-2 flex flex-col gap-2'>
         <ThemeToggle />
         <SidebarSeparator />
         <SidebarMenu>
