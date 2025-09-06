@@ -62,9 +62,6 @@ export default function DashboardPage() {
                 <GenClassId />
                 <UploadLecture />
               </div>
-              <div className="mt-12">
-                <StudyMaterials />
-              </div>
             </div>
 
             <div id="create-quiz">
@@ -105,9 +102,6 @@ export default function DashboardPage() {
                 Live Class
               </h2>
               <JoinClass />
-            </div>
-            <div id="study-materials">
-              <StudyMaterials />
             </div>
             <div id="analytics">
               <StudentAnalytics />

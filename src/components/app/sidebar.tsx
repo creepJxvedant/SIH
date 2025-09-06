@@ -25,27 +25,26 @@ import {
   SidebarSeparator,
 } from '@/components/ui/sidebar';
 import { Button } from '../ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Role } from '@/lib/types';
 
 const studentNav = [
-  { href: '#live-class', label: 'Live Class', icon: Clapperboard },
-  { href: '#study-materials', label: 'Study Materials', icon: BookCopy },
-  { href: '#analytics', label: 'Analytics', icon: BarChart2 },
-  { href: '#profile', label: 'Profile', icon: User },
+  { href: '/dashboard#live-class', label: 'Live Class', icon: Clapperboard },
+  { href: '/dashboard/study-materials', label: 'Study Materials', icon: BookCopy },
+  { href: '/dashboard#analytics', label: 'Analytics', icon: BarChart2 },
+  { href: '/dashboard#profile', label: 'Profile', icon: User },
 ];
 
 const teacherNav = [
-  { href: '#dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '#create-quiz', label: 'Create Quiz', icon: PencilRuler },
-  { href: '#submissions', label: 'Submissions', icon: FileCheck },
-  { href: '#students', label: 'Students', icon: Users },
-  { href: '#settings', label: 'Settings', icon: Settings },
+  { href: '/dashboard#dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/dashboard#create-quiz', label: 'Create Quiz', icon: PencilRuler },
+  { href: '/dashboard#submissions', label: 'Submissions', icon: FileCheck },
+  { href: '/dashboard#students', label: 'Students', icon: Users },
+  { href: '/dashboard#settings', label: 'Settings', icon: Settings },
 ];
 
 export function AppSidebar() {
-  const pathname = usePathname();
   const router = useRouter();
   const [role, setRole] = useState<Role | null>(null);
 
@@ -62,14 +61,7 @@ export function AppSidebar() {
   const navItems = role === 'student' ? studentNav : teacherNav;
 
   const handleNav = (href: string) => {
-    if (pathname === '/dashboard') {
-      const element = document.querySelector(href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      router.push(`/dashboard${href}`);
-    }
+    router.push(href);
   };
 
   return (

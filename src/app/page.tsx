@@ -19,7 +19,7 @@ import { GraduationCap, LogIn } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { Role } from '@/lib/types';
 
-const TEACHER_SECRET = 'SUPER_SECRET_KEY'; // In a real app, this would be an environment variable
+const TEACHER_SECRET = 'ok'; // In a real app, this would be an environment variable
 
 export default function LoginPage() {
   const [role, setRole] = useState<Role>('student');
