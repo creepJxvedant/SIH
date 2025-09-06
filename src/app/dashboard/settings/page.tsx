@@ -2,7 +2,7 @@
 'use client';
 import { TeacherProfile } from '@/components/app/teacher-profile';
 import { SecuritySettings } from '@/components/app/security-settings';
-import { Header } from '@/componentsapp//header';
+import { Header } from '@/components/app/header';
 
 export default function SettingsPage() {
     return (
