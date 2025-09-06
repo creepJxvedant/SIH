@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -10,17 +11,20 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Copy, PartyPopper } from 'lucide-react';
+import { Copy, PartyPopper, Play } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '../ui/input';
+import { LiveClassTeacherView } from './live-class-teacher-view';
 
 export function GenClassId() {
   const [classId, setClassId] = useState('');
+  const [isClassStarted, setIsClassStarted] = useState(false);
   const { toast } = useToast();
 
   const generateClassId = () => {
     const newId = Math.random().toString(36).substring(2, 10).toUpperCase();
     setClassId(newId);
+    setIsClassStarted(false); // Reset class state when a new ID is generated
   };
 
   const copyToClipboard = () => {
@@ -32,19 +36,29 @@ export function GenClassId() {
     });
   };
 
+  const startClass = () => {
+    if (classId) {
+      setIsClassStarted(true);
+    }
+  };
+
+  if (isClassStarted) {
+    return <LiveClassTeacherView classId={classId} onEndClass={() => setIsClassStarted(false)} />;
+  }
+
   return (
-    <Card>
+    <Card className="lg:col-span-3">
       <CardHeader>
-        <CardTitle>Generate Class ID</CardTitle>
+        <CardTitle>Start a Live Class</CardTitle>
         <CardDescription>
-          Create a unique ID for your live class session.
+          Generate a unique ID and start your live class session.
         </CardDescription>
       </CardHeader>
       <CardContent>
         {classId ? (
           <div className="flex items-center space-x-2">
             <Input value={classId} readOnly className="font-mono text-lg" />
-            <Button variant="outline" size="icon" onClick={copyToClipboard}>
+            <Button variant="outline" size="icon" onClick={copyToClipboard} aria-label="Copy Class ID">
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -57,10 +71,16 @@ export function GenClassId() {
           </div>
         )}
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex-col sm:flex-row gap-2">
         <Button onClick={generateClassId} className="w-full">
           {classId ? 'Generate New ID' : 'Generate Class ID'}
         </Button>
+        {classId && (
+          <Button onClick={startClass} className="w-full">
+            <Play className="mr-2" />
+            Start Class
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );
