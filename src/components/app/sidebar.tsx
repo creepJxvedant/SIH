@@ -15,6 +15,7 @@ import {
   FileCheck,
   Download,
   MoonStar,
+  ClipboardList,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -36,6 +37,7 @@ import { useTheme } from 'next-themes';
 const studentNav = [
   { href: '/dashboard/live-class', label: 'Live Class', icon: Clapperboard },
   { href: '/dashboard/study-materials', label: 'Study Materials', icon: BookCopy },
+  { href: '/dashboard/tests', label: 'Tests', icon: ClipboardList },
   { href: '/dashboard/downloads', label: 'Downloads', icon: Download },
   { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
   { href: '/dashboard/profile', label: 'Profile', icon: User },
@@ -94,7 +96,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 onClick={() => handleNav(item.href)}
                 tooltip={item.label}
-                isActive={pathname === item.href}
+                isActive={pathname.startsWith(item.href)}
                 className="cursor-pointer"
               >
                 
