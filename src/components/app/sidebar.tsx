@@ -11,6 +11,8 @@ import {
   LogOut,
   Users,
   Settings,
+  PencilRuler,
+  FileCheck,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -36,6 +38,8 @@ const studentNav = [
 
 const teacherNav = [
   { href: '#dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '#create-quiz', label: 'Create Quiz', icon: PencilRuler },
+  { href: '#submissions', label: 'Submissions', icon: FileCheck },
   { href: '#students', label: 'Students', icon: Users },
   { href: '#settings', label: 'Settings', icon: Settings },
 ];

@@ -12,10 +12,11 @@ import type { Role } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StudentAnalytics } from '@/components/app/student-analytics';
 import { StudentProfile } from '@/components/app/student-profile';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { StudentManagement } from '@/components/app/student-management';
 import { TeacherProfile } from '@/components/app/teacher-profile';
 import { SecuritySettings } from '@/components/app/security-settings';
+import { CreateQuiz } from '@/components/app/create-quiz';
+import { ViewSubmissions } from '@/components/app/view-submissions';
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
@@ -64,6 +65,20 @@ export default function DashboardPage() {
               <div className="mt-12">
                 <StudyMaterials />
               </div>
+            </div>
+
+            <div id="create-quiz">
+               <h2 className="text-3xl font-bold mb-6 font-headline">
+                Create Quiz
+              </h2>
+               <CreateQuiz />
+            </div>
+
+            <div id="submissions">
+               <h2 className="text-3xl font-bold mb-6 font-headline">
+                Submissions
+              </h2>
+               <ViewSubmissions />
             </div>
 
             <div id="students">
