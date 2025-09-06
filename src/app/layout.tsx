@@ -64,7 +64,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
             <footer className="p-4">
                  <Separator />
                 <p className="text-center text-xs text-muted-foreground mt-4">
-                Dreamers.PSITCHE TEAM
+                created for the punjab students by Dreamers.PSITCHE Team for better future.
                 </p>
             </footer>
         </div>
