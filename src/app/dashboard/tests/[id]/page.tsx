@@ -3,6 +3,7 @@
 
 import { Header } from '@/components/app/header';
 import { TestTaker } from '@/components/app/test-taker';
+import { useParams } from 'next/navigation';
 
 const tests = {
     'quiz-1': {
@@ -25,8 +26,10 @@ const tests = {
 };
 
 
-export default function TestPage({ params }: { params: { id: keyof typeof tests } }) {
-    const testData = tests[params.id] || null;
+export default function TestPage() {
+    const params = useParams();
+    const testId = params.id as keyof typeof tests;
+    const testData = tests[testId] || null;
     
     return (
         <div className="flex flex-col w-full h-screen bg-background">
