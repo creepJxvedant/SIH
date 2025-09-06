@@ -4,7 +4,7 @@ import { Header } from '@/components/app/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Download, FileText, Presentation, Video } from 'lucide-react';
+import { ExternalLink, FileText, Presentation, Trash2, Video } from 'lucide-react';
 
 const downloadedItems = [
     {
@@ -54,7 +54,7 @@ export default function DownloadsPage() {
                                     <TableHead>Type</TableHead>
                                     <TableHead>Size</TableHead>
                                     <TableHead>Date</TableHead>
-                                    <TableHead className="text-right">Action</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -66,10 +66,14 @@ export default function DownloadsPage() {
                                         <TableCell>{item.type}</TableCell>
                                         <TableCell>{item.size}</TableCell>
                                         <TableCell>{item.downloadedAt}</TableCell>
-                                        <TableCell className="text-right">
-                                            <Button variant="outline" size="sm">
-                                                <Download className="mr-2"/>
-                                                Download Again
+                                        <TableCell className="text-right space-x-2">
+                                            <Button variant="outline" size="icon">
+                                                <ExternalLink className="w-4 h-4" />
+                                                <span className="sr-only">Open</span>
+                                            </Button>
+                                             <Button variant="destructive" size="icon">
+                                                <Trash2 className="w-4 h-4" />
+                                                 <span className="sr-only">Delete</span>
                                             </Button>
                                         </TableCell>
                                     </TableRow>
