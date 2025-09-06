@@ -52,6 +52,16 @@ const teacherNav = [
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
+function SidebarNavLoading() {
+    return (
+        <div className="flex flex-col gap-2 p-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+                <Skeleton key={i} className="h-8 w-full" />
+            ))}
+        </div>
+    )
+}
+
 export function AppSidebar() {
   const router = useRouter();
   const pathname = usePathname();
@@ -93,23 +103,27 @@ export function AppSidebar() {
         </Button>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu>
-          {navItems.map((item) => (
-            <SidebarMenuItem key={item.label}>
-              <SidebarMenuButton
-                onClick={() => handleNav(item.href)}
-                tooltip={item.label}
-                isActive={pathname.startsWith(item.href)}
-                className="cursor-pointer"
-              >
-                
-                  <item.icon />
-                  <span>{item.label}</span>
-                
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
+        {!mounted || !role ? (
+            <SidebarNavLoading />
+        ) : (
+            <SidebarMenu>
+            {navItems.map((item) => (
+                <SidebarMenuItem key={item.label}>
+                <SidebarMenuButton
+                    onClick={() => handleNav(item.href)}
+                    tooltip={item.label}
+                    isActive={pathname.startsWith(item.href)}
+                    className="cursor-pointer"
+                >
+                    
+                    <item.icon />
+                    <span>{item.label}</span>
+                    
+                </SidebarMenuButton>
+                </SidebarMenuItem>
+            ))}
+            </SidebarMenu>
+        )}
       </SidebarContent>
       <SidebarFooter className='p-2 flex flex-col gap-2'>
         <ThemeToggle />
