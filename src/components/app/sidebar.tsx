@@ -33,6 +33,7 @@ import { useEffect, useState } from 'react';
 import type { Role } from '@/lib/types';
 import { ThemeToggle } from './theme-toggle';
 import { useTheme } from 'next-themes';
+import { Skeleton } from '../ui/skeleton';
 
 const studentNav = [
   { href: '/dashboard/live-class', label: 'Live Class', icon: Clapperboard },
@@ -56,10 +57,12 @@ export function AppSidebar() {
   const pathname = usePathname();
   const [role, setRole] = useState<Role | null>(null);
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const storedRole = localStorage.getItem('userRole') as Role | null;
     setRole(storedRole);
+    setMounted(true);
   }, []);
 
   const handleLogout = () => {
@@ -83,7 +86,7 @@ export function AppSidebar() {
           className="flex items-center justify-start gap-2 w-full px-2"
           onClick={() => handleNav('/dashboard')}
         >
-          <AppLogo className="size-8 text-primary" />
+          {mounted ? <AppLogo className="size-8 text-primary" /> : <Skeleton className="size-8 rounded-full" />}
           <span className="font-bold text-lg text-foreground group-data-[collapsible=icon]:hidden">
             EduNow
           </span>
