@@ -10,8 +10,26 @@ import { JoinClass } from '@/components/app/join-class';
 import type { Role } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
+function DashboardLoading() {
+  return (
+    <div className="flex flex-col w-full">
+      <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
+        <Skeleton className="h-8 w-32" />
+        <Skeleton className="h-8 w-24 ml-auto" />
+      </header>
+      <main className="flex-1 p-4 md:p-6 lg:p-8">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <Skeleton className="h-48 rounded-lg" />
+          <Skeleton className="h-48 rounded-lg" />
+        </div>
+      </main>
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -20,24 +38,12 @@ export default function DashboardPage() {
       router.push('/');
     } else {
       setRole(storedRole);
+      setLoading(false);
     }
   }, [router]);
 
-  if (!role) {
-    return (
-      <div className="flex flex-col w-full">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
-          <Skeleton className="h-8 w-32" />
-          <Skeleton className="h-8 w-24 ml-auto" />
-        </header>
-        <main className="flex-1 p-4 md:p-6 lg:p-8">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Skeleton className="h-48 rounded-lg" />
-            <Skeleton className="h-48 rounded-lg" />
-          </div>
-        </main>
-      </div>
-    );
+  if (loading) {
+    return <DashboardLoading />;
   }
 
   return (
