@@ -10,6 +10,8 @@ import { JoinClass } from '@/components/app/join-class';
 import { StudyMaterials } from '@/components/app/study-materials';
 import type { Role } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { StudentAnalytics } from '@/components/app/student-analytics';
+import { StudentProfile } from '@/components/app/student-profile';
 
 export default function DashboardPage() {
   const [role, setRole] = useState<Role | null>(null);
@@ -44,18 +46,34 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col w-full">
       <Header role={role} />
-      <main className="flex-1 p-4 md:p-6 lg:p-8">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {role === 'teacher' ? (
-            <>
+      <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-12">
+        {role === 'teacher' ? (
+          <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               <GenClassId />
               <UploadLecture />
-            </>
-          ) : (
-            <JoinClass />
-          )}
-        </div>
-        <StudyMaterials />
+            </div>
+            <StudyMaterials />
+          </>
+        ) : (
+          <>
+            <div id="live-class">
+              <h2 className="text-3xl font-bold mb-6 font-headline">
+                Live Class
+              </h2>
+              <JoinClass />
+            </div>
+            <div id="study-materials">
+              <StudyMaterials />
+            </div>
+            <div id="analytics">
+              <StudentAnalytics />
+            </div>
+            <div id="profile">
+              <StudentProfile />
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

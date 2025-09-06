@@ -1,3 +1,4 @@
+
 import {
   Card,
   CardContent,
@@ -29,12 +30,33 @@ const materials = [
     image: 'https://picsum.photos/400/200?random=3',
     hint: 'math blackboard',
   },
+    {
+    title: 'Intro to Python',
+    description: 'Beginner-friendly PDF guide to Python.',
+    icon: <FileText className="w-6 h-6 text-primary" />,
+    image: 'https://picsum.photos/400/200?random=4',
+    hint: 'code computer',
+  },
+  {
+    title: 'The Solar System',
+    description: 'Slideshow of planets and celestial bodies.',
+    icon: <Presentation className="w-6 h-6 text-primary" />,
+    image: 'https://picsum.photos/400/200?random=5',
+    hint: 'galaxy space',
+  },
+  {
+    title: 'Creative Writing',
+    description: 'Video on storytelling techniques.',
+    icon: <Video className="w-6 h-6 text-primary" />,
+    image: 'https://picsum.photos/400/200?random=6',
+    hint: 'writing notebook',
+  },
 ];
 
 export function StudyMaterials() {
   return (
     <section>
-      <h2 className="text-3xl font-bold mb-6 mt-12 font-headline">
+      <h2 className="text-3xl font-bold mb-6 font-headline">
         Shared Materials
       </h2>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
