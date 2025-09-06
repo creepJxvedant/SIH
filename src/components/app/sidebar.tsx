@@ -13,6 +13,7 @@ import {
   Settings,
   PencilRuler,
   FileCheck,
+  Download,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -32,6 +33,7 @@ import type { Role } from '@/lib/types';
 const studentNav = [
   { href: '/dashboard/live-class', label: 'Live Class', icon: Clapperboard },
   { href: '/dashboard/study-materials', label: 'Study Materials', icon: BookCopy },
+  { href: '/dashboard/downloads', label: 'Downloads', icon: Download },
   { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
   { href: '/dashboard/profile', label: 'Profile', icon: User },
 ];
@@ -87,6 +89,7 @@ export function AppSidebar() {
                 onClick={() => handleNav(item.href)}
                 tooltip={item.label}
                 isActive={pathname === item.href}
+                className="cursor-pointer"
               >
                 
                   <item.icon />
@@ -101,7 +104,7 @@ export function AppSidebar() {
         <SidebarSeparator />
         <SidebarMenu>
            <SidebarMenuItem>
-              <SidebarMenuButton onClick={handleLogout} tooltip="Logout">
+              <SidebarMenuButton onClick={handleLogout} tooltip="Logout" className="cursor-pointer">
                 <LogOut />
                 <span>Logout</span>
               </SidebarMenuButton>

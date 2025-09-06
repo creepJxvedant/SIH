@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AppSidebar } from '@/components/app/sidebar';
 import './globals.css';
 import { usePathname } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
 
 // Metadata can only be exported from Server Components
 // export const metadata: Metadata = {
@@ -55,7 +56,19 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>{children}</SidebarInset>
+      <SidebarInset>
+        <div className='flex flex-col min-h-screen'>
+            <main className="flex-1">
+                {children}
+            </main>
+            <footer className="p-4">
+                 <Separator />
+                <p className="text-center text-xs text-muted-foreground mt-4">
+                Dreamers.PSITCHE TEAM
+                </p>
+            </footer>
+        </div>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
