@@ -29,7 +29,7 @@ const tests = {
 export default function TestPage() {
     const params = useParams();
     const testId = params.id as keyof typeof tests;
-    const testData = tests[testId] || null;
+    const testData = testId ? tests[testId] : null;
     
     return (
         <div className="flex flex-col w-full h-screen bg-background">
