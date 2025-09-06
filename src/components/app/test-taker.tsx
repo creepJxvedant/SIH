@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
@@ -10,6 +10,7 @@ import { Label } from '../ui/label';
 import { AlertTriangle, Check, ShieldAlert } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { Progress } from '../ui/progress';
 
 interface Question {
     id: number;
@@ -86,6 +87,11 @@ export function TestTaker({ testData }: TestTakerProps) {
         if (!submittedTests.includes(testData.id)) {
             submittedTests.push(testData.id);
             localStorage.setItem('submittedTests', JSON.stringify(submittedTests));
+            // Force a storage event to trigger updates in other tabs
+            window.dispatchEvent(new StorageEvent('storage', {
+                key: 'submittedTests',
+                newValue: JSON.stringify(submittedTests),
+            }));
         }
         
         toast({
@@ -180,6 +186,8 @@ export function TestTaker({ testData }: TestTakerProps) {
     }
 
     const currentQuestion = testData.questions[currentQuestionIndex];
+    const progress = ((currentQuestionIndex + 1) / testData.questions.length) * 100;
+
 
     return (
         <div className="bg-background h-screen w-screen flex items-center justify-center p-4">
@@ -194,6 +202,7 @@ export function TestTaker({ testData }: TestTakerProps) {
                          )}
                     </CardTitle>
                     <CardDescription>Question {currentQuestionIndex + 1} of {testData.questions.length}</CardDescription>
+                     <Progress value={progress} className="w-full mt-2" />
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <p className="font-semibold text-lg">{currentQuestion.text}</p>

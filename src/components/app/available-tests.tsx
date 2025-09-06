@@ -18,14 +18,14 @@ const liveTests = [
     id: 'quiz-1',
     title: 'Algebra Midterm',
     subject: 'Mathematics',
-    questions: 20,
+    questions: 3,
     duration: 60, // in minutes
   },
   {
     id: 'quiz-2',
     title: 'Quantum Physics Fundamentals',
     subject: 'Physics',
-    questions: 15,
+    questions: 2,
     duration: 45,
   },
 ];
@@ -34,6 +34,7 @@ export function AvailableTests() {
   const [completedTests, setCompletedTests] = useState<string[]>([]);
 
   useEffect(() => {
+    // Initial load from localStorage
     const storedSubmissions = localStorage.getItem('submittedTests');
     if (storedSubmissions) {
       setCompletedTests(JSON.parse(storedSubmissions));
@@ -41,12 +42,15 @@ export function AvailableTests() {
     
     // Listen for storage changes from other tabs/windows
     const handleStorageChange = (event: StorageEvent) => {
-      if (event.key === 'submittedTests' && event.newValue) {
-        setCompletedTests(JSON.parse(event.newValue));
-      }
+        // When the "submittedTests" item changes, update the state
+        if (event.key === 'submittedTests' && event.newValue) {
+            setCompletedTests(JSON.parse(event.newValue));
+        }
     };
 
     window.addEventListener('storage', handleStorageChange);
+
+    // Cleanup listener on component unmount
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
@@ -56,7 +60,7 @@ export function AvailableTests() {
   const handleStartTest = (testId: string) => {
     // Open the test in a new, focused window.
     // The test page itself will handle the fullscreen request.
-    const testWindow = window.open(`/test-session/${testId}`, '_blank', 'noopener,noreferrer');
+    const testWindow = window.open(`/test-session/${testId}`, '_blank', 'noopener,noreferrer,width=1200,height=800');
     testWindow?.focus();
   };
 
