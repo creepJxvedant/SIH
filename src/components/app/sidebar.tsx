@@ -14,6 +14,7 @@ import {
   PencilRuler,
   FileCheck,
   Download,
+  MoonStar,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -30,6 +31,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { Role } from '@/lib/types';
 import { ThemeToggle } from './theme-toggle';
+import { useTheme } from 'next-themes';
 
 const studentNav = [
   { href: '/dashboard/live-class', label: 'Live Class', icon: Clapperboard },
@@ -51,6 +53,7 @@ export function AppSidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const [role, setRole] = useState<Role | null>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const storedRole = localStorage.getItem('userRole') as Role | null;
@@ -67,6 +70,8 @@ export function AppSidebar() {
   const handleNav = (href: string) => {
     router.push(href);
   };
+  
+  const AppLogo = theme === 'dark' ? MoonStar : GraduationCap;
 
   return (
     <Sidebar>
@@ -76,7 +81,7 @@ export function AppSidebar() {
           className="flex items-center justify-start gap-2 w-full px-2"
           onClick={() => handleNav('/dashboard')}
         >
-          <GraduationCap className="size-8 text-primary" />
+          <AppLogo className="size-8 text-primary" />
           <span className="font-bold text-lg text-foreground group-data-[collapsible=icon]:hidden">
             EduNow
           </span>
